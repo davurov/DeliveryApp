@@ -37,6 +37,7 @@ class ProductCell: UITableViewCell {
         
         self.pizzaName.text = pizza?.name
         self.buyBtn.setTitle("от $ \(pizza!.price!)", for: .normal)
+        self.pizzaDesc.text = "Ingrediants: \(pizza!.description!)"
         
         guard self.pizza!.img != "" else {
             return
