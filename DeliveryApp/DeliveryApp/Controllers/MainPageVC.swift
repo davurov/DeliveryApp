@@ -64,8 +64,8 @@ class MainPageVC: UIViewController, ModelDelegate {
         }
     }
     
-    func dataFetch(_ videos: ProductModel) {
-        pizzas = videos
+    func dataFetch(_ data: ProductModel) {
+        pizzas = data
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -93,15 +93,23 @@ extension MainPageVC: UICollectionViewDataSource, UICollectionViewDelegate, UICo
 
 extension MainPageVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        pizzas.count
+        if !pizzas.isEmpty {
+            return pizzas.count
+        } else {
+            return 10
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "tabCell", for: indexPath) as! ProductCell
-        let pizza = pizzas[indexPath.row]
         
-        cell.setCell(pizza)
+        
+        if !pizzas.isEmpty {
+            let pizza = pizzas[indexPath.row]
+            cell.setCell(pizza)
+        }
+        
         return cell
     }
     
@@ -121,10 +129,12 @@ extension MainPageVC: UIScrollViewDelegate {
             // did move up
             UIView.animate(withDuration: 0.1) { [self] in
                 collectionView.isHidden = true
+                tableView.layer.cornerRadius = 0
             }
         } else if self.lastContentOffset > scrollView.contentOffset.y {
             // did move down
             self.collectionView.isHidden = false
+            tableView.layer.cornerRadius = 20
         } else {
         }
     }

@@ -34,20 +34,19 @@ class ProductCell: UITableViewCell {
         guard pizza != nil else {
             return
         }
-        // set title of the cell
+        
         self.pizzaName.text = pizza?.name
+        self.buyBtn.setTitle("от $ \(pizza!.price!)", for: .normal)
         
         guard self.pizza!.img != "" else {
             return
         }
-        //Check thumbnail before downloading data
+        
         if let cachedData = CacheManager.getImageCache((self.pizza?.img)!) {
-            // set thumbnail imageView
             self.pizzaPhoto.image = UIImage(data: cachedData)
             return
         }
         
-        // Download thumbnail
         let url = URL(string: self.pizza!.img ?? "")
         // Get the shared url session object
         let session = URLSession.shared

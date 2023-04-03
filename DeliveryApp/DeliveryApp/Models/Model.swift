@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ModelDelegate {
-    func dataFetch(_ videos:ProductModel)
+    func dataFetch(_ data:ProductModel)
 }
 
 class Model {
