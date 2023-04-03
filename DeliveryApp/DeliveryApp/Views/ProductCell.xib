@@ -16,7 +16,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="483" height="242"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Буффало 1" translatesAutoresizingMaskIntoConstraints="NO" id="CA9-6E-xlA">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Буффало 1" translatesAutoresizingMaskIntoConstraints="NO" id="CA9-6E-xlA">
                         <rect key="frame" x="16" y="24" width="194" height="194"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="CA9-6E-xlA" secondAttribute="height" id="3Ww-rn-IPH"/>
@@ -54,7 +54,7 @@
                         <state key="normal" title="от 345 р"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="20"/>
+                                <integer key="value" value="10"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
@@ -74,6 +74,9 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="buyBtn" destination="LkD-TW-R5k" id="IrM-2G-YBI"/>
+                <outlet property="pizzaDesc" destination="n29-Ka-0il" id="aeC-8n-O0W"/>
+                <outlet property="pizzaName" destination="QJP-iI-Qaw" id="STB-XS-XQg"/>
+                <outlet property="pizzaPhoto" destination="CA9-6E-xlA" id="jKH-Hv-nYL"/>
             </connections>
             <point key="canvasLocation" x="69" y="-52"/>
         </tableViewCell>

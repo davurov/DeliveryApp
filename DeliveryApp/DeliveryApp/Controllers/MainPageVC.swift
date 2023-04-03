@@ -7,21 +7,25 @@
 
 import UIKit
 
-class MainPageVC: UIViewController {
-    
+class MainPageVC: UIViewController, ModelDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var categoryBtns: [UIButton]!
     
     var lastContentOffset: CGFloat = 0
+    let model = Model()
+    var pizzas = [ProductModelElement]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        model.getPizzas()
+        model.delegate = self
         setUpTableView()
         setUpCollectionView()
         giveBorders()
+        
         
     }
     
@@ -37,7 +41,6 @@ class MainPageVC: UIViewController {
                 categoryBtns[btn.tag].layer.borderColor = UIColor.red.cgColor
             }
         }
-        
     }
     
     func setUpCollectionView() {
@@ -61,11 +64,18 @@ class MainPageVC: UIViewController {
         }
     }
     
+    func dataFetch(_ videos: ProductModel) {
+        pizzas = videos
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
 }
 
 extension MainPageVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectidonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         10
     }
     
@@ -83,12 +93,15 @@ extension MainPageVC: UICollectionViewDataSource, UICollectionViewDelegate, UICo
 
 extension MainPageVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        100
+        pizzas.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tabCell", for: indexPath)
-
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tabCell", for: indexPath) as! ProductCell
+        let pizza = pizzas[indexPath.row]
+        
+        cell.setCell(pizza)
         return cell
     }
     
@@ -98,20 +111,20 @@ extension MainPageVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MainPageVC: UIScrollViewDelegate {
-
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.lastContentOffset = scrollView.contentOffset.y
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if self.lastContentOffset < scrollView.contentOffset.y {
             // did move up
-            UIView.animate(withDuration: 0.1) {
-                self.collectionView.isHidden = true
+            UIView.animate(withDuration: 0.1) { [self] in
+                collectionView.isHidden = true
             }
         } else if self.lastContentOffset > scrollView.contentOffset.y {
             // did move down
-                self.collectionView.isHidden = false
+            self.collectionView.isHidden = false
         } else {
         }
     }
