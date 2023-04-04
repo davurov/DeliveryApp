@@ -13,9 +13,11 @@ class MainPageVC: UIViewController, ModelDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet var categoryBtns: [UIButton]!
     
+    var cellIndex = 0
     var lastContentOffset: CGFloat = 0
     let model = Model()
     var pizzas = [ProductModelElement]()
+    var discountRanges = [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0), IndexPath(row: 2, section: 0), IndexPath(row: 3, section: 0), IndexPath(row: 4, section: 0), IndexPath(row: 5, section: 0)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +27,17 @@ class MainPageVC: UIViewController, ModelDelegate {
         setUpTableView()
         setUpCollectionView()
         giveBorders()
+        giveAlpha()
         
+        //------------right  swipe gestures in collectionView--------------//
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(rightSwiped))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        self.collectionView.addGestureRecognizer(swipeRight)
+        
+        //-----------left swipe gestures in collectionView--------------//
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(leftSwiped))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        self.collectionView.addGestureRecognizer(swipeLeft)
         
     }
     
@@ -71,16 +83,43 @@ class MainPageVC: UIViewController, ModelDelegate {
         }
     }
     
+    @objc func leftSwiped() {
+        if cellIndex < discountRanges.count - 1 {
+            collectionView.scrollToNextItem()
+            cellIndex += 1
+            giveAlpha()
+        }
+    }
+    
+    @objc func rightSwiped() {
+        if cellIndex != 0 {
+            collectionView.scrollToPreviousItem()
+            cellIndex -= 1
+            giveAlpha()
+        }
+    }
+    
+    func giveAlpha() {
+        for i in discountRanges {
+            if i.row == cellIndex {
+                collectionView.cellForItem(at: i)?.alpha = 1
+            } else {
+                collectionView.cellForItem(at: i)?.alpha = 0.4
+            }
+        }
+    }
+    
 }
 
 extension MainPageVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
     func collectionView(_ collectidonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        discountRanges.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell1", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell1", for: indexPath) as! DiscountCell
+        
         
         return cell
     }
@@ -140,3 +179,18 @@ extension MainPageVC: UIScrollViewDelegate {
     }
 }
 
+extension UICollectionView {
+    func scrollToNextItem() {
+        let contentOffset = CGFloat(floor(self.contentOffset.x + 310))
+        self.moveToFrame(contentOffset: contentOffset)
+    }
+    
+    func scrollToPreviousItem() {
+        let contentOffset = CGFloat(floor(self.contentOffset.x - 310))
+        self.moveToFrame(contentOffset: contentOffset)
+    }
+    
+    func moveToFrame(contentOffset : CGFloat) {
+        self.setContentOffset(CGPoint(x: contentOffset, y: self.contentOffset.y), animated: true)
+    }
+}

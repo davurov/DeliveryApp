@@ -9,6 +9,7 @@ import UIKit
 
 class DiscountCell: UICollectionViewCell {
 
+    @IBOutlet weak var discountPhoto: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

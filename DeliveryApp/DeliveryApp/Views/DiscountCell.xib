@@ -29,6 +29,9 @@
                 <constraint firstAttribute="trailing" secondItem="6hB-Cf-vzg" secondAttribute="trailing" constant="-10" id="xJ0-sD-Era"/>
             </constraints>
             <size key="customSize" width="591" height="265"/>
+            <connections>
+                <outlet property="discountPhoto" destination="6hB-Cf-vzg" id="iC0-A5-2wu"/>
+            </connections>
             <point key="canvasLocation" x="513.74045801526711" y="94.718309859154928"/>
         </collectionViewCell>
     </objects>
